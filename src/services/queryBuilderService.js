@@ -135,13 +135,17 @@ const ALLOWED_OPERATORS = {
 /**
  * Build and execute a Supabase query based on the extracted intent
  * @param {Object} intent - The extracted intent object
+ * @param {Object} customClient - Optional custom Supabase client (for RLS)
  * @returns {Object} Query result and metadata
  */
-const buildAndExecuteQuery = async (intent) => {
+const buildAndExecuteQuery = async (intent, customClient = null) => {
   // Validate the intent
   if (!intent || !intent.intent || !INTENT_TO_TABLE[intent.intent]) {
     throw new ValidationError(`Invalid or unsupported intent: ${intent?.intent}`);
   }
+
+  // Use the provided custom client if available, otherwise use the global client
+  const client = customClient || supabase;
 
   const table = INTENT_TO_TABLE[intent.intent];
   const queryType = INTENT_TO_QUERY_TYPE[intent.intent];
@@ -149,7 +153,7 @@ const buildAndExecuteQuery = async (intent) => {
   
   try {
     // Start building the query
-    let query = supabase.from(table);
+    let query = client.from(table);
     let count = null;
     
     // Apply query type
