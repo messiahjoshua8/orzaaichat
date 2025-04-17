@@ -7,6 +7,7 @@ const { errorHandler } = require('./middleware/errorHandler');
 const healthRoutes = require('./api/health');
 const queryRoutes = require('./api/query');
 const chatRoutes = require('./api/chat');
+const adminAttachOrgRoutes = require('./api/admin/attach-org');
 
 // Initialize express app
 const app = express();
@@ -22,6 +23,7 @@ app.use(require('./middleware/requestLogger'));
 app.use('/api/health', healthRoutes);
 app.use('/api/query', queryRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/admin/attach-org', adminAttachOrgRoutes);
 
 // Error handling
 app.use(errorHandler);
