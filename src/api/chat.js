@@ -25,7 +25,13 @@ router.post('/', authenticateJWT, async (req, res) => {
     }
     
     // Get user data from the authenticated request
-    const { id: userId, orgId, token } = req.user;
+    const { id: userId, orgId: tokenOrgId, token } = req.user;
+    
+    // Use organizationId from request body if provided, otherwise fall back to token
+    const orgId = req.body.organizationId || tokenOrgId;
+    
+    // Log the organization being used
+    logger.info(`Processing chat request from user belonging to organization: ${orgId}`);
     
     // Process the chat message using the user's authenticated context
     const response = await processChat(

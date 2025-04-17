@@ -37,10 +37,13 @@ const authenticateJWT = (req, res, next) => {
       });
     }
     
+    // Extract organization ID from app_metadata
+    const orgId = decodedToken.app_metadata?.org_id || null;
+    
     // Set user and organization data on request object
     req.user = {
       id: decodedToken.sub,
-      orgId: decodedToken.org_id,
+      orgId: orgId,
       token: token
     };
     

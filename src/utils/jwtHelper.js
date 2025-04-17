@@ -14,8 +14,8 @@ const verifyToken = (token) => {
     const decoded = jwt.verify(token, process.env.SUPABASE_JWT_SECRET);
     
     // Log that we extracted the org_id (but not the actual value for security)
-    if (decoded && decoded.org_id) {
-      logger.info('Successfully extracted organization ID from JWT');
+    if (decoded && decoded.app_metadata && decoded.app_metadata.org_id) {
+      logger.info('Successfully extracted organization ID from JWT app_metadata');
     }
     
     return decoded;
